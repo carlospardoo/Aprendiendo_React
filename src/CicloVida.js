@@ -1,4 +1,5 @@
 import React from 'react';
+import Frase from './Frase';
 /* 
 Ciclo de Vida
 
@@ -118,19 +119,41 @@ componentWillUnmount() {
 export class CicloVida extends React.Component{
   
   constructor(props){
-      super(props);
-    this.state={
-      comentarios:[],
-      tiempo:0
+    super(props);
+    this.state = {
+      comentarios : [{id:1,fras:'a'},{id:2,fras:'b'}],
+      tiempo : 0,
+      txtFrase : ''
     }
+    this.editFrase = this.editFrase.bind(this);
+    this.addComentario = this.addComentario.bind(this);
   }
-  nuevaFrase(){
-    
+  addComentario(event){
+    event.preventDefault();
+    //const nuevoCom = this.state.comentarios.push({id:(this.state.comentarios.length+1),fras:this.state.txtFrase});
+    //console.log("Viejos: "+JSON.stringify(this.state.comentarios));
+    //console.log("NuevoCom: "+JSON.stringify(nuevoCom));
+
+    //const nuevo={id:(this.state.comentarios.length+1),fras:this.state.txtFrase};
+    this.setState((state)=>{
+      // eslint-disable-next-line
+      comentarios : state.comentarios.push({id:(this.state.comentarios.length+1),fras:this.state.txtFrase})
+    });
+    //console.log(JSON.stringify(this.state.comentarios));
   }
   incremento(){
     this.setState((state) => ({tiempo : this.state.tiempo+1}));
   }
+  editFrase = (ev) => {
+    ev.preventDefault();
+    const valor = ev.target.value;
+    //console.log("Valor es: "+valor);
+    this.setState({
+      txtFrase : valor
+    });
+  }
 
+  //Ciclo de vida
   componentDidMount(){
       //this.conteo es un props?
       this.conteo=setInterval(() => this.incremento(),1000);
@@ -139,15 +162,23 @@ export class CicloVida extends React.Component{
   componentWillUnmount(){
       clearInterval(this.conteo);
   }
-  
+
   render(){
-      //onClick="nuevaFrase()"
+      //console.log(JSON.stringify(this.state.comentarios));
+    
     return(
-      <form>
+      <form onSubmit={this.addComentario}>
         <div>Hola {this.props.nombre}, esto es: {this.props.descripcion}</div>
         <div>Tiempo actual: {this.state.tiempo}</div>
-        <input type="text" name="txtFrase"/>
-        <button >Agregar Frase</button>
+        <input type="text" name="txtFrase" value={this.state.txtFrase} onChange={this.editFrase} /> 
+        <button>Agregar Frase</button>
+        <ul>
+          {
+            this.state.comentarios.map((i) => 
+              <Frase key={i.id} id={i.id} comentarios={i.fras} />
+            )
+          }
+        </ul>
       </form>
     );
   }
