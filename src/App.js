@@ -1,6 +1,6 @@
 import React from 'react';
 import CicloVida from './CicloVida';
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
 
 function App() {
