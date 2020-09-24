@@ -117,11 +117,11 @@ componentWillUnmount() {
 
 */
 export class CicloVida extends React.Component{
-  
+  //[{id:1,fras:'a'},{id:2,fras:'b'}]
   constructor(props){
     super(props);
     this.state = {
-      comentarios : [{id:1,fras:'a'},{id:2,fras:'b'}],
+      comentarios : [],
       tiempo : 0,
       txtFrase : ''
     }
